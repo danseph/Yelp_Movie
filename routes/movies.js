@@ -4,9 +4,9 @@ const   express = require("express"),
         middleware = require("../middleware")
 
 //INDEX - show all mlvies
-router.get("/", function(req, res){
+router.get("/", (req, res) => {
     // Get all movies from DB
-    Movie.find({}, function(err, allMovies){
+    Movie.find({}, (err, allMovies) => {
        if(err){
            console.log(err);
        } else {
@@ -16,7 +16,7 @@ router.get("/", function(req, res){
 });
 
 //CREATE - add new movie to DB
-router.post("/", middleware.isLoggedIn, function(req, res){
+router.post("/", middleware.isLoggedIn, (req, res) => {
     // get data from form and add to movies array
         let name = req.body.name;
         let release = req.body.release;
@@ -28,7 +28,7 @@ router.post("/", middleware.isLoggedIn, function(req, res){
     }
     let newMovie = {name: name, release:release, image: image, description: desc, author: author}
     // Create a new movie and save to DB
-    Movie.create(newMovie, function(err, newlyCreated){
+    Movie.create(newMovie, (err, newlyCreated) => {
         if(err){
             console.log(err);
         } else {
@@ -40,14 +40,14 @@ router.post("/", middleware.isLoggedIn, function(req, res){
 });
 
 //NEW - show form to create new movie
-router.get("/new", middleware.isLoggedIn, function(req, res){
+router.get("/new", middleware.isLoggedIn, (req, res) => {
    res.render("movies/new"); 
 });
 
 // SHOW - shows more info about one movie
-router.get("/:id", function(req, res){
+router.get("/:id", (req, res) => {
     //find the movie with provided ID
-    Movie.findById(req.params.id).populate("comments").exec(function(err, foundMovie){
+    Movie.findById(req.params.id).populate("comments").exec((err, foundMovie) => {
         if(err){
             console.log(err);
         } else {
@@ -59,16 +59,16 @@ router.get("/:id", function(req, res){
 });
 
 //EDIT MOVIE ROUTE
-router.get("/:id/edit", middleware.checkMovieOwnership, function(req, res){
-        Movie.findById(req.params.id, function(err, foundMovie){
+router.get("/:id/edit", middleware.checkMovieOwnership, (req, res) => {
+        Movie.findById(req.params.id, (err, foundMovie) => {
             res.render("movies/edit", {movie: foundMovie});
         });
 });
 
 //UPDATE MOVIE ROUTE
-router.put("/:id", middleware.checkMovieOwnership, function(req, res){
+router.put("/:id", middleware.checkMovieOwnership, (req, res) => {
     //find an update the correct movie
-    Movie.findByIdAndUpdate(req.params.id, req.body.movie, function(err, updatedMovie){
+    Movie.findByIdAndUpdate(req.params.id, req.body.movie, (err, updatedMovie) => {
         if(err){
             res.redirect("/movies");
         } else {
@@ -79,8 +79,8 @@ router.put("/:id", middleware.checkMovieOwnership, function(req, res){
 });
 
 //DESTROY MOVIE ROUTE
-router.delete("/:id", middleware.checkMovieOwnership, function(req, res){
-    Movie.findByIdAndRemove(req.params.id, function(err){
+router.delete("/:id", middleware.checkMovieOwnership, (req, res) => {
+    Movie.findByIdAndRemove(req.params.id, (err) => {
         if(err){
             res.redirect("/movies");
         } else {

@@ -3,10 +3,10 @@ const Comment = require("../models/comment")
 // all the middleware goes here
 const middlewareObj = {};
 
-middlewareObj.checkMovieOwnership = function(req, res, next){
+middlewareObj.checkMovieOwnership = (req, res, next) => {
  //is user logged in?
     if(req.isAuthenticated()){
-        Movie.findById(req.params.id, function(err, foundMovie){
+        Movie.findById(req.params.id, (err, foundMovie) => {
             if(err){
                 req.flash("error", "Movie not found");
                 res.redirect("back");
@@ -26,9 +26,9 @@ middlewareObj.checkMovieOwnership = function(req, res, next){
     }
 }
 
-middlewareObj.checkCommentOwnership = function(req, res, next){
+middlewareObj.checkCommentOwnership = (req, res, next) => {
     if(req.isAuthenticated()){
-        Comment.findById(req.params.comment_id, function(err, foundComment){
+        Comment.findById(req.params.comment_id, (err, foundComment) => {
             if(err){
                 res.redirect("back");
             } else {
@@ -47,7 +47,7 @@ middlewareObj.checkCommentOwnership = function(req, res, next){
     }
 }
 
-middlewareObj.isLoggedIn = function (req, res, next){
+middlewareObj.isLoggedIn = (req, res, next) => {
     if(req.isAuthenticated()){
         return next();
     }
